@@ -1,0 +1,118 @@
+# Factor analysis is regression method to find hidden factors in a dataset
+# factors are also called latent variables
+# Latent variables are variables that are inferred but not directly observable
+# Factor analysis assumptions
+# Features are metric
+# Features are continuous or ordinal
+# The corelation between features is > 0.3
+# no of observations >100 and >5 observation per feature
+# Sample is homogeneous
+# Explanatory Factor Analysis
+import pandas as pd
+import numpy as np
+import sklearn
+from sklearn.decomposition import FactorAnalysis
+from sklearn import datasets
+# Factor analysis on iris dataset
+iris =datasets.load_iris()
+X= iris.data
+variable_names= iris.feature_names
+X[0:10]
+factor=FactorAnalysis().fit(X)
+pd.DataFrame(factor.components_,columns=variable_names)
+# Sigular Value Decomposition(SVD)
+# PCA is the most common application of SVD, PCA is unsupervised machine learning algorithm,  it convers variables into non co related synthetic representation  of variables
+# PCA removes outliers, noice, redundency that were present in the original data
+# PCA can be used for fraud detection, spam detection, image recognition, speech recognition, outlier remover
+# PCA
+import numpy as np
+import pandas as pd
+
+import matplotlib.pyplot as plt
+import pylab as plt
+import seaborn as sb
+from IPython.display import Image
+from IPython.core.display import HTML
+from pylab import rcParams
+import sklearn 
+from sklearn import decomposition
+from sklearn.decomposition import PCA
+from sklearn import datasets
+%matplotlib inline
+rcParams["figure.figsize"]=5,4
+sb.set_style("whitegrid")
+# PCA on the iris dataset
+iris=datasets.load_iris()
+X = iris.data
+variable_names=iris.feature_names
+X[1:10]
+# initiating a fit method in PCA
+pca=decomposition.PCA()
+iris_pca=pca.fit_transform(X)
+pca.explained_variance_ratio_
+# from the array we can see that the first two components retains 97% of the information
+pca.explained_variance_ratio_.sum()
+# Here 1.0 means 100% of the information is retained but we do not want 100% to be retained
+
+# explained variance ratio means how much information is compressed in the first few components
+# explained variance ratio is used to calculate cumulative variance
+# Cumulative variance helps to figure out how many components to consider
+# Retain atleast 70% original dataset
+comps=pd.DataFrame(pca.components_,columns=variable_names)
+comps
+# co relation heat map to see how the dataset's variables co relate
+sb.heatmap(comps)
+# Outlier detection
+# it is useful for preprocessing techniques
+# 3 main types of outliers
+
+# Univariate analysis
+import numy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+frompylab import rcParams
+
+%matplotlib inline
+rcParams["figure,figsize"]=5,4
+df=pd.read_csv(filepath_or_buffer="C:/Users/uidj1620/Desktop/Datasets for pandas/irisdata.csv",
+              header=None,
+              sep=",")
+df.column=("Sepal Lenght","Sepal Width","Petal Lenght","Petal Width","Species")
+X=df.iloc[:,0:4].values
+Y=df.iloc[:,4].values
+df[:5]
+#Identifying outliers from Tukey boxplots
+df.boxplot(return_type="dict")
+plt.plot()
+Sepal_Width=X[:,1]
+iris_outliers=(Sepal_Width>4)
+df[iris_outliers]
+Sepal_Width=X[:,1]
+iris_outliers=(Sepal_Width<2.5)
+df[iris_outliers]
+# Applying turkey outlier labeling
+pd.options.display.float_format="{:1f}".format
+X_df=pd.DataFrame(X)
+print (X_df.describe())
+# Multivariate analysis
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from pylab import rcParams
+import seaborn as sb
+        %matplotlib inline
+        rcParams["figure.figsize"]=5,4
+        sb.set_style("whitegrid")
+# Visually inspecting boxplots
+df=pd.read_csv(filepath_or_buffer="C:/Users/uidj1620/Desktop/Datasets for pandas/irisdata.csv",
+              header=None,
+              sep=",")
+df.column=("Sepal Lenght","Sepal Width","Petal Lenght","Petal Width","Species")
+data=df.iloc[:,0:4].values
+target=df.iloc[:,4].values
+df[:5]
+
+sb.boxplot(x="Species",y="Sepal Lenght", data=df, palette="hls")
+sb.pairplot(df,hue="Species",palette="hls")
+
+        
