@@ -1,0 +1,143 @@
+# T14- https://www.youtube.com/watch?v=sCkS-0kIRCE&list=PLZ7s-Z1aAtmIbaEj_PtUqkqdmI1k7libK&index=14
+# co relation does not imply causation
+# Pearson Co relation coefficient
+# R=1 Strong positive relation
+# R=0 Not linearly related
+# R=-1 Strong negative relation
+
+# Pearson corelation example
+# 1. Data is normally distributed
+# 2. Variables are continuous, numeric
+# 3. Variables are linearly related 
+# Starting with parametric methods in pandas and scipy
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from pylab import rcParams
+import seaborn as sb
+import scipy
+from scipy.stats.stats import pearsonr
+%matplotlib inline
+rcParams['figure.figsize']=5,4
+sb.set_style('whitegrid')
+# The Pearson corelation
+address="C:/Users/uidj1620/Documents/R/R-3.4.3/library/readr/extdata/mtcars.csv"
+cars=pd.read_csv(address)
+cars.columns=["mpg","cyl","disp","hp","drat","wt","qsec","vs","am","gear","carb"
+]
+sb.pairplot(cars)
+X=cars[["mpg","hp","qsec","wt"]]
+sb.pairplot(X)
+# Peason coraltion assuption
+# data is normally distributed, linearly related, continuous and numeric variable
+# using scipy to calculate the Pearson correlation coefficient
+In [27]:
+
+
+mpg = cars["mpg"]
+hp=cars["hp"]
+qsec=cars["qsec"]
+wt=cars["wt"]
+​
+pearsonr_coefficient, p_value=pearsonr(mpg,hp)
+print( "PearsonR Correlation Coefficient % 0.3f" % (pearsonr_coefficient)) 
+pearsonr_coefficient, p_value=pearsonr(mpg,qsec)
+print( "PearsonR Correlation Coefficient % 0.3f" % (pearsonr_coefficient)) 
+pearsonr_coefficient, p_value=pearsonr(mpg,wt)
+print( "PearsonR Correlation Coefficient % 0.3f" % (pearsonr_coefficient))
+#correlation of all variables
+corr=X.corr()
+corr
+# variable corelation by using heatmap
+sb.heatmap(corr, xticklabels=corr.columns.values, yticklabels=corr.columns.values)
+# Non parametric corelation analysis
+# Spearman's rank corelation - works on ordinal variable()/catagorical variable
+# Chi-square tables
+# P <0.05 -reject the null hypothesis
+# bin the numeric variables
+# Non-Parametric methods using pandas and scipy
+import numpy as np
+import pandas as pd
+from pandas import Series, DataFrame
+import matplotlib.pyplot as plt
+from pylab import rcParams
+import seaborn as sb
+import scipy
+from scipy.stats import spearmanr
+%matplotlib inline
+rcParams["figure.figsize"]=5,4
+sb.set_style("whitegrid")
+# the Spearman Rank Corelation
+address="C:/Users/uidj1620/Documents/R/R-3.4.3/library/readr/extdata/mtcars.csv"
+cars=pd.read_csv(address)
+cars.columns=["mpg","cyl","disp","hp","drat","wt","qsec","vs","am","gear","carb"
+]
+cars.head()
+[38]:
+
+
+sb.pairplot(cars)
+X=cars[["cyl","vs","am","gear"]]
+sb.pairplot(X)
+cyl=cars["cyl"]
+vs=cars["vs"]
+gear=cars["gear"]
+am=cars["am"]
+
+spearmanr_coefficient, p_value=spearmanr(cyl,vs)
+print("Spearman Rank Corelation Coefficient %0.3f" % (spearmanr_coefficient))
+spearmanr_coefficient, p_value=spearmanr(cyl,gear)
+print("Spearman Rank Corelation Coefficient %0.3f" % (spearmanr_coefficient))
+spearmanr_coefficient, p_value=spearmanr(cyl,am)
+print("Spearman Rank Corelation Coefficient %0.3f" % (spearmanr_coefficient))
+
+
+
+# Chi-Square test for independence
+table = pd.crosstab(cyl,am)
+from scipy.stats import chi2_contingency
+chi2, p, dof , expected = chi2_contingency(table.values)
+print ("Chi-square Statistic %0.3f p_value %0.3f" % (chi2,p))
+# Why it is important to scale data?
+# unscaled data produces erroneous and misleading results
+# two ways to scale data - 
+#standardization(rescaling data so that it has a zeo mean and unit variance)
+# normalization(putting each observation on a relative scale between 0 and 1)
+# value of observation/ sum of all observations in variable
+# Scikit learn - preprocessing tool
+# using sckit learn you can scale, center, normalize, bin and impute data
+# Transforming dataset distribution
+import numpy as np
+import pandas as pd
+from pandas import Series, DataFrame
+import matplotlib.pyplot as plt
+from pylab import rcParams
+import seaborn as sb
+import scipy
+import sklearn
+from sklearn import preprocessing
+from sklearn.preprocessing import scale
+% matplotlib inline
+rcParams["figure.figsize"]=5,4
+sb.set_style("whitegrid")
+# Normalizing and transforming features with MinMaxScalar() and fit_transform()
+address="C:/Users/uidj1620/Documents/R/R-3.4.3/library/readr/extdata/mtcars.csv"
+cars=pd.read_csv(address)
+cars.columns=["mpg","cyl","disp","hp","drat","wt","qsec","vs","am","gear","carb"
+]
+mpg=cars.mpg
+plt.plot(mpg)
+cars[["mpg"]].describe()
+mpg_matrix=mpg.values.reshape(-1,1)
+scaled=preprocessing.MinMaxScaler()
+scaled_mpg=scaled.fit_transform(mpg_matrix)
+plt.plot(scaled_mpg)
+mpg_matrix=mpg.values.reshape(-1,1)
+scaled=preprocessing.MinMaxScaler(feature_range=(1,10))
+scaled_mpg=scaled.fit_transform(mpg_matrix)
+plt.plot(scaled_mpg)
+# standardize a variable
+standardized_mpg=scale(mpg ,axis=0, with_mean=False,with_std=False)
+plt.plot(standardized_mpg)
+standardized_mpg=scale(mpg)
+plt.plot(standardized_mpg)
